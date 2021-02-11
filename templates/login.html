@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block navbar %}
+<header class="mb-auto">
+  <div>
+    <h3 class="float-md-start mb-0 px-5 mx-5">Sendr.</h3>
+    <nav class="nav nav-masthead justify-content-center float-md-end px-5 mx-5">
+      <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+      <a class="nav-link active" aria-current="page" href="{{ url_for('login') }}">Login</a>
+    </nav>
+  </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<main class="container px-3 text-center">
+  <img src="{{ url_for('static', filename='galaxy.jpeg') }}" id="myVideo">
+  <h1>Login.</h1>
+  
+  <p class="lead">Your account would have be given to you by an adminstrator.</p>
+    <form class="px-3" action="/login/" method="POST">
+      {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <span>{{ message }}</span>
+                  </div>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+    <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
+    <div class="py-2"></div>
+    <input type="password" name="password" class="form-control" placeholder="Password" required>
+    <div class="py-2"></div>
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+      <div class="py-2"></div>
+      <button class="btn btn-outline-light btn-lg" type="submit">Sign in</button>
+    </form>
+</main>
+
+{% endblock %}

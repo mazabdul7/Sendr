@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block title %}Track{% endblock %}
+
+{% block navbar %}
+<header class="mb-auto">
+  <div>
+    <h3 class="float-md-start mb-0">VacTrack.</h3>
+    <nav class="nav nav-masthead justify-content-center float-md-end">
+      <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Track</a>
+      {% if session['USERNAME'] %}   
+      <a class="nav-link" href="{{ url_for('profile') }}">My Profile</a>
+      <a class="nav-link" href="{{ url_for('sign_out') }}">Sign Out</a>
+      {% else %}
+      <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<main class="container px-3 text-center">
+  <img src="{{ url_for('static', filename='moon2.jpg') }}" id="myVideo">
+  {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <span>{{ message }}</span>
+                  </div>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+  <h1>You are tracking a(n) {{ vile.vac_type.upper() }} vaccine.</h1>
+  {% if vile.vac_type.upper() == "COVID" %}
+  <img src="{{ url_for('static', filename='covid.png') }}" width=190 height=190 >
+  <div class="py-2"></div>
+  {% endif %}
+  {% if vile.vac_type.upper() == "MRSA" %}
+  <img src="{{ url_for('static', filename='mrsa.png') }}" width=150 height=150>
+  <div class="py-2"></div>
+  {% endif %}
+  <table class="table table-bordered table-light table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Unique ID</th>
+        <th scope="col">Batch Number</th>
+        <th scope="col">Date Created</th>
+        <th scope="col">Date Tagged</th>
+        <th scope="col">Expiry Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">{{ vile.id }}</th>
+        <td>{{ vile.batch_no }}</td>
+        <td>{{ vile.creation_date.strftime('%m/%d/%Y, %H:%M:%S') }}</td>
+        <td>{{ vile.tagging_date.strftime('%m/%d/%Y, %H:%M:%S') }}</td>
+        <td>{{ vile.expiration_date.strftime('%m/%d/%Y' )}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  {% if session['USERNAME'] %}
+  <form class="px-3" action="/edit/{{ vile.id }}">
+    <button type="submit" class="btn btn-outline-light">Edit</button>
+  </form>
+  {% endif %}
+  <div class="py-2"></div>
+  <form class="px-3" action="/">
+  <button type="submit" class="btn btn-outline-light">Track another</button>
+  </form>
+</main>
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block title %}Track{% endblock %}
+
+{% block navbar %}
+<header class="mb-auto">
+  <div>
+    <h3 class="float-md-start mb-0 px-5 mx-5">Sendr.</h3>
+    <nav class="nav nav-masthead justify-content-center float-md-end px-5 mx-5">
+      <a class="nav-link"href="{{ url_for('index') }}">Home</a>
+      <a class="nav-link active" aria-current="page" href="{{ url_for('profile') }}">Upload</a>
+      <a class="nav-link" href="{{ url_for('sign_out') }}">Sign Out</a>
+    </nav>
+  </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<main class="container px-3 text-center bg-dark">
+  <img src="{{ url_for('static', filename='galaxy.jpeg') }}" id="myVideo">
+  <div class = "container bg-dark">
+  <h1>Welcome back, {{ session['USERNAME'].upper() }}!</h1>
+  <p>Server Status: Online</p>
+  <div class="py-2"></div>
+    {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                      <span>{{ message }}</span>
+                  </div>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+      <table class="table table-bordered table-light table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Queue Number</th>
+            <th scope="col">MD5 Hash</th>
+            <th scope="col">Filename</th>
+            <th scope="col">Commit Status</th>
+            <th scope="col">Blockchain Status</th>
+            <th scope="col">Downloaded</th>
+            <th scope="col">Date Uploaded</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        {% if filelist %}
+          <tr>
+            <th scope="row">{{ filelist.id }}</th>
+            <td>{{ filelist.hash }}</td>
+            <td>{{ filelist.filename }}</td>
+            <td>{{ filelist.commit }}</td>
+            <td>{{ filelist.block_stat}}</td>
+            <td>{{ filelist.downloaded }}</td>
+            <td>{{ filelist.upload_date.strftime('%m/%d/%Y, %H:%M:%S' )}}</td>
+          </tr>
+        {% endif %}
+        </tbody>
+      </table>
+      {% if session['FILEPRESENT'] and not session["COMMIT"] %}
+        <form action='/profile/delete' class="float-md-start">
+          <button class="btn btn-outline-light btn-md" type="submit">Delete All</button>
+        </form>
+      {% endif %}
+    {% if session['COMMIT'] %}
+      <p class="pt-1">Upload Status: Staged</p>
+      <form action='/profile/commit' class="float-md-end">
+        <button class="btn btn-outline-light btn-md" type="submit">Commit Update</button>
+      </form>
+      <form action='/profile/delete' class="float-md-start">
+        <button class="btn btn-outline-light btn-md" type="submit">Cancel Update</button>
+      </form>
+    {% endif %}
+    <div class="py-3"></div>
+      <hr/>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+  </div>
+    
+</main>
+
+{% endblock %}

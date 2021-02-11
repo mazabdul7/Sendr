@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}Track{% endblock %}
+
+{% block navbar %}
+<header class="mb-auto">
+  <div>
+    <h3 class="float-md-start mb-0">VacTrack.</h3>
+    <nav class="nav nav-masthead justify-content-center float-md-end">
+      <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Track</a>
+      {% if session['USERNAME'] %}   
+      <a class="nav-link" href="{{ url_for('profile') }}">My Profile</a>
+      <a class="nav-link" href="{{ url_for('sign_out') }}">Sign Out</a>
+      {% else %}
+      <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<main class="container px-3 text-center">
+  <img src="{{ url_for('static', filename='moon2.jpg') }}" id="myVideo">
+  <h1>You are editing the data for the Unique Serial Object {{ vile.id }}</h1>
+  <form class="px-3" action="/edit/{{ vile.id }}" method="POST">
+    <p>Vaccine type:</p>
+    <input type="text" name="type" class="form-control" value="{{ vile.vac_type }}" required autofocus>
+    <div class="py-2"></div>
+    <p>Batch number:</p>
+    <input type="text" name="batch" class="form-control" value="{{ vile.batch_no}}" required autofocus>
+    <div class="py-2"></div>
+    <button type="submit" class="btn btn-outline-light">Confirm edit</button>
+  </form>
+  <form class="px-3" action="/track/{{ vile.id }}">
+    <button type="submit" class="btn btn-outline-light float-md-end">Cancel edit</button>
+  </form>
+  <form class="px-3" action="/">
+  <button type="submit" class="btn btn-outline-light float-md-start">Track another</button>
+  </form>
+</main>
+
+{% endblock %}

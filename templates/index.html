@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block navbar %}
+<header class="mb-auto">
+  <div>
+    <h3 class="float-md-start mb-0 px-5 mx-5">Sendr.</h3>
+    <nav class="nav nav-masthead justify-content-center float-md-end px-5 mx-5">
+      <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Home</a>
+      {% if session['USERNAME'] %}   
+      <a class="nav-link" href="{{ url_for('profile') }}">Upload</a>
+      <a class="nav-link" href="{{ url_for('sign_out') }}">Sign Out</a>
+      {% else %}
+      <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<main class="container px-3 text-center">
+  <img src="{{ url_for('static', filename='galaxy.jpeg') }}" id="myVideo">
+  <h1>A simple, model ecosystem.</h1>
+    <form class="px-3" action="{{ url_for('login') }}">
+      <button class="btn btn-outline-light btn-lg" type="submit">Start</button>
+    </form>
+</main>
+
+{% endblock %}
