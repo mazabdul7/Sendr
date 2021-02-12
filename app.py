@@ -222,6 +222,7 @@ def download(user, key):
 
             if hashcheck == files.hash:
                 files.downloaded = "Yes"
+                db.session.add(files) ##dddd
                 db.session.commit()
 
                 return send_from_directory(app.config['UPLOAD_FOLDER'],
