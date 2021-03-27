@@ -9,5 +9,5 @@ Project repo: https://github.com/mazabdul7/AtTheEdge
 
 
 ## TO DO:
--Implement Ethereum blockchain verification.
+-Implement Ethereum blockchain verification.  
 -Implement Git.
