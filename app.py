@@ -68,24 +68,6 @@ def index():
 
     return render_template('index.html')
 
-@app.route('/track/<id>')
-def show_record(id):
-    vile = Markers.query.get(id)
-    
-    if vile is None:
-        flash("Please enter a valid serial identifier!")
-        return redirect('/')
-    
-    if not session.get("USERNAME") is None:
-        newaccess = accessHistory(username = session.get("USERNAME"), marker_id = vile.id, action = "view")
-    else:
-        newaccess = accessHistory(marker_id = vile.id, action = "view")
-    
-    # db.session.add(newaccess)
-    # db.session.commit()
-
-    return render_template('show_record.html', vile=vile)
-
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
